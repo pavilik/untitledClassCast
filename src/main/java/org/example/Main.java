@@ -3,6 +3,7 @@ package org.example;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +28,21 @@ public class Main {
                     )
             );
         }
+        cities.sort(
+                Comparator.comparing(city -> city.name.toLowerCase())
+        );
+
+        List<City> sortedCityByDistAndCity = cities.stream()
+                .sorted(
+                        Comparator.comparing(City::getDistrict)
+                                .thenComparing(City::getName)
+
+                )
+                .toList();
+
         System.out.println(cities);
+        System.out.println(sortedCityByDistAndCity);
+
 
     }
 
@@ -55,7 +70,15 @@ public class Main {
                     ", district='" + district + '\'' +
                     ", population=" + population +
                     ", foundation='" + foundation + '\'' +
-                    '}'+"\n\n";
+                    '}' + "\n\n";
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDistrict() {
+            return district;
         }
     }
 }
