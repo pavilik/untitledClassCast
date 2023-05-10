@@ -28,6 +28,13 @@ public class Main {
                     )
             );
         }
+
+        City maxpopulCity = cities.stream().max(Comparator.comparing(city -> city.population)).orElseThrow();
+        System.out.println(
+                "[" + cities.indexOf(maxpopulCity) + "]" + " = "
+                        + String.format("%,d", maxpopulCity.population) + "\n");
+
+
         cities.sort(
                 Comparator.comparing(city -> city.name.toLowerCase())
         );
