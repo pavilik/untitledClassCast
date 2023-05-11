@@ -3,9 +3,9 @@ package org.example;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
@@ -29,26 +29,33 @@ public class Main {
             );
         }
 
-        City maxpopulCity = cities.stream().max(Comparator.comparing(city -> city.population)).orElseThrow();
-        System.out.println(
-                "[" + cities.indexOf(maxpopulCity) + "]" + " = "
-                        + String.format("%,d", maxpopulCity.population) + "\n");
+
+        cities.stream()
+                .collect(Collectors.groupingBy(City::getRegion))
+                .forEach((k, v) -> System.out.println(
+                        k + " - " + v.size()
+                ));
+
+//        City maxpopulCity = cities.stream().max(Comparator.comparing(city -> city.population)).orElseThrow();
+//        System.out.println(
+//                "[" + cities.indexOf(maxpopulCity) + "]" + " = "
+//                        + String.format("%,d", maxpopulCity.population) + "\n");
 
 
-        cities.sort(
-                Comparator.comparing(city -> city.name.toLowerCase())
-        );
-
-        List<City> sortedCityByDistAndCity = cities.stream()
-                .sorted(
-                        Comparator.comparing(City::getDistrict)
-                                .thenComparing(City::getName)
-
-                )
-                .toList();
-
-        System.out.println(cities);
-        System.out.println(sortedCityByDistAndCity);
+//        cities.sort(
+//                Comparator.comparing(city -> city.name.toLowerCase())
+//        );
+//
+//        List<City> sortedCityByDistAndCity = cities.stream()
+//                .sorted(
+//                        Comparator.comparing(City::getDistrict)
+//                                .thenComparing(City::getName)
+//
+//                )
+//                .toList();
+//
+//        System.out.println(cities);
+//        System.out.println(sortedCityByDistAndCity);
 
 
     }
@@ -68,7 +75,6 @@ public class Main {
             this.foundation = foundation;
         }
 
-
         @Override
         public String toString() {
             return "City{" +
@@ -84,8 +90,12 @@ public class Main {
             return name;
         }
 
-        public String getDistrict() {
-            return district;
+        public String getRegion() {
+            return region;
         }
+
+//        public String getDistrict() {
+//            return district;
+//        }
     }
 }
